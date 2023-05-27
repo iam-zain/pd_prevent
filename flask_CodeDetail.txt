@@ -1,0 +1,11 @@
+Get the user's gender, age, and feature scores from the form.
+Create a dictionary of feature scores, where the keys are the feature names and the values are the scores.
+Check to make sure that the user has selected at least three features.
+If the user has not selected at least three features, return an error message.
+Create a list of input vectors. Each input vector consists of the feature name and the score for that feature.
+Join the input vectors together with spaces and create a command to run the ThreeModelPrediction.py script. The command takes the age, the number of features, and the input string as arguments.
+Run the ThreeModelPrediction.py script and get the output.
+Split the output string on spaces and get the prediction term.
+Convert the numeric value to a float.
+Check the prediction term and set the gauge color accordingly.
+Return the output, the gauge color, and the numeric value to the template.

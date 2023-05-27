@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PD-PREVeNT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-container select,
+        .form-container input[type="number"],
+        .form-container input[type="range"],
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .slider {
+            width: 100%;
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function updateScoreRange() {
+            var selectedFeatures = document.querySelectorAll(".feature-select");
+            var scoreRanges = {
+                Anxiety: { min: 1, max: 8 },
+                Apathy: { min: 4, max: 22 },
+                Benton: { min: 2, max: 7 },
+                Clock: { min: 1, max: 8 },
+                Cognition: { min: 4, max: 22 },
+                COGSTATE: { min: 2, max: 7 },
+                Constipate: { min: 1, max: 8 },
+                Depress: { min: 4, max: 22 },
+                DopaDefic: { min: 2, max: 7 }
+            };
+
+            for (var i = 0; i < selectedFeatures.length; i++) {
+                var selectedFeature = selectedFeatures[i].value;
+                var scoreRange = scoreRanges[selectedFeature];
+                var scoreInput = document.getElementById("Score_Feature" + (i + 1));
+                var scoreValue = document.getElementById("Score_Feature" + (i + 1) + "_Value");
+
+                if (scoreRange) {
+                    scoreInput.min = scoreRange.min;
+                    scoreInput.max = scoreRange.max;
+                    scoreValue.innerText = scoreInput.value;
+                } else {
+                    scoreInput.min = 0;
+                    scoreInput.max = 90;
+                    scoreValue.innerText = "";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>PD-PREVeNT</h1>
+    <div class="form-container">
+        <form action="/submit" method="POST">
+            <label for="Gender">Gender:</label>
+            <select name="Gender" id="Gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label for="Age">Age:</label>
+            <input type="number" name="Age" id="Age"><br><br>
+
+            <label for="Feature1">Feature 1:</label>
+            <select class="feature-select" name="Feature1" onchange="updateScoreRange()">
+                <option value="">Select a feature</option>
+                <option value="Anxiety">Anxiety</option>
+                <option value="Apathy">Apathy</option>
+                <option value="Benton">Benton</option>
+            </select><br>
+            <label for="Score_Feature1">Score:</label>
+            <input type="range" class="slider" name="Score_Feature1" id="Score_Feature1" min="0" max="90" oninput="Score_Feature1_Value.innerText = Score_Feature1.value">
+            <span id="Score_Feature1_Value" class="slider-value"></span><br><br>
+
+            <label for="Feature2">Feature 2:</label>
+            <select class="feature-select" name="Feature2" onchange="updateScoreRange()">
+                <option value="">Select a feature</option>
+                <option value="Clock">Clock</option>
+                <option value="Cognition">Cognition</option>
+                <option value="COGSTATE">COGSTATE</option>
+            </select><br>
+            <label for="Score_Feature2">Score:</label>
+            <input type="range" class="slider" name="Score_Feature2" id="Score_Feature2" min="0" max="90" oninput="Score_Feature2_Value.innerText = Score_Feature2.value">
+            <span id="Score_Feature2_Value" class="slider-value"></span><br><br>
+
+            <label for="Feature3">Feature 3:</label>
+            <select class="feature-select" name="Feature3" onchange="updateScoreRange()">
+                <option value="">Select a feature</option>
+                <option value="Constipate">Constipate</option>
+                <option value="Depress">Depress</option>
+                <option value="DopaDefic">DopaDefic</option>
+            </select><br>
+            <label for="Score_Feature3">Score:</label>
+            <input type="range" class="slider" name="Score_Feature3" id="Score_Feature3" min="0" max="90" oninput="Score_Feature3_Value.innerText = Score_Feature3.value">
+            <span id="Score_Feature3_Value" class="slider-value"></span><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
