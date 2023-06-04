@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PD-PREVeNT</title>
+    <style>
+        /* Styles remain the same */
+    </style>
+    <script>
+        function updateScoreRange() {
+            var selectedFeatures = document.querySelectorAll(".feature-select");
+            var scoreRanges = {
+                Anxiety: { min: 1, max: 8 },
+                Apathy: { min: 4, max: 22 },
+                Benton: { min: 2, max: 7 },
+                Clock: { min: 1, max: 8 },
+                Cognition: { min: 4, max: 22 },
+                COGSTATE: { min: 2, max: 7 },
+                Constipate: { min: 1, max: 8 },
+                Depress: { min: 4, max: 22 },
+                DopaDefic: { min: 2, max: 7 }
+            };
+
+            for (var i = 0; i < selectedFeatures.length; i++) {
+                var selectedFeature = selectedFeatures[i].value;
+                var scoreInput = document.getElementById("Score_Feature" + (i + 1));
+                var scoreValue = document.getElementById("Score_Feature" + (i + 1) + "_Value");
+
+                if (selectedFeature) {
+                    var scoreRange = scoreRanges[selectedFeature];
+                    if (scoreRange) {
+                        scoreInput.min = scoreRange.min;
+                        scoreInput.max = scoreRange.max;
+                        scoreValue.innerText = scoreInput.value;
+                    } else {
+                        scoreInput.min = 0;
+                        scoreInput.max = 90;
+                        scoreValue.innerText = "";
+                    }
+                    scoreInput.style.display = "block";
+                    scoreValue.style.display = "inline-block";
+                } else {
+                    scoreInput.style.display = "none";
+                    scoreValue.style.display = "none";
+                }
+            }
+        }
+
+        function updateFeatureOptions() {
+            var numFeatures = parseInt(document.getElementById("num_features").value);
+            var featureContainer = document.getElementById("feature_container");
+            featureContainer.innerHTML = "";
+
+            for (var i = 1; i <= numFeatures; i++) {
+                var featureDiv = document.createElement("div");
+                featureDiv.innerHTML = `
+                    <label for="Feature${i}">Feature ${i}:</label>
+                    <select class="feature-select" name="Feature${i}" onchange="updateScoreRange()">
+                        <option value="">Select a feature</option>
+                        <option value="Anxiety">Anxiety</option>
+                        <option value="Apathy">Apathy</option>
+                        <option value="Benton">Benton</option>
+                        <option value="Clock">Clock</option>
+                        <option value="Cognition">Cognition</option>
+                        <option value="COGSTATE">COGSTATE</option>
+                        <option value="Constipate">Constipate</option>
+                        <option value="Depress">Depress</option>
+                        <option value="DopaDefic">DopaDefic</option>
+                    </select><br>
+                    <label for="Score_Feature${i}">Score:</label>
+                    <input type="range" class="slider" name="Score_Feature${i}" id="Score_Feature${i}" min="0" max="90" oninput="Score_Feature${i}_Value.innerText = Score_Feature${i}.value">
+                    <span id="Score_Feature${i}_Value" class="slider-value"></span><br><br>
+                `;
+                featureContainer.appendChild(featureDiv);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>PD-PREVeNT</h1>
+    <div class="form-container">
+        <form action="/submit" method="POST">
+            <label for="Gender">Gender:</label>
+            <select name="Gender" id="Gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label for="Age">Age:</label>
+            <input type="number" name="Age" id="Age"><br><br>
+
+            <!-- Add the input field for num_features -->
+            <label for="num_features">Number of Features:</label>
+            <input type="number" id="num_features" name="num_features" min="1" max="45" onchange="updateFeatureOptions()"><br><br>
+
+            <!-- Add a container to dynamically generate feature options -->
+            <div id="feature_container"></div>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
