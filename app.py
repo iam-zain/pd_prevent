@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import subprocess
 
 app = Flask(__name__)
@@ -36,18 +36,13 @@ def submit():
 
     command = f'python ThreeModelPrediction.py {age} {len(feature_scores)} {input_str}'
     output = subprocess.getoutput(command)
-    out_term = output.split()[7]
-    numeric_value = float(''.join(filter(str.isdigit, output)))
+    out_split = output.split("#")
+    numeric_value = int(''.join(filter(str.isdigit, output)))
 
-    if out_term == 'Patient,':
-        gauge_color = 'danger'
-    elif out_term == 'Healthy,':
-        gauge_color = 'success'
-    else:
-        gauge_color = 'warning'
-
-    return render_template('result.html', output=output, gauge_color=gauge_color, numeric_value=numeric_value)
-
+    data = {
+        'output':output, 'numeric_value':numeric_value
+    }
+    return out_split
 
 if __name__ == '__main__':
     app.run(debug=True)

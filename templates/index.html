@@ -1,146 +1,805 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>PD-PREVeNT</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/css/bootstrap-select.min.css" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            padding: 20px;
-        }
+      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder,
+      .selectpicker-wrp.error-show
+        button.btn.dropdown-toggle.btn-selectpicker-swsFactors,
+      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:active,
+      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:focus,
+      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:hover {
+        border-color: #dc3545;
+      }
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
+      label.text-danger.small.font-weight-bold.error-helper {
+        opacity: 0;
+        left: 15px;
+        bottom: -30px;
+        position: absolute;
+      }
 
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+      .selectpicker-wrp.error-show
+        label.text-danger.small.font-weight-bold.error-helper {
+        opacity: 1;
+      }
 
-        .form-container label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .form-container select,
-        .form-container input[type="number"],
-        .form-container input[type="range"],
-        .form-container input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-        }
-
-        .slider {
-            width: 100%;
-        }
-
-        .slider-value {
-            display: inline-block;
-            margin-left: 10px;
-            font-weight: bold;
-        }
-
-        .form-container input[type="submit"] {
-            background-color: #4CAF50;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .form-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+      .selectpicker-wrp {
+        position: relative;
+      }
     </style>
-    <script>
-        function updateScoreRange() {
-            var selectedFeatures = document.querySelectorAll(".feature-select");
-            var scoreRanges = {
-                Anxiety: { min: 1, max: 8 },
-                Apathy: { min: 4, max: 22 },
-                Benton: { min: 2, max: 7 },
-                Clock: { min: 1, max: 8 },
-                Cognition: { min: 4, max: 22 },
-                COGSTATE: { min: 2, max: 7 },
-                Constipate: { min: 1, max: 8 },
-                Depress: { min: 4, max: 22 },
-                DopaDefic: { min: 2, max: 7 }
-            };
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExample08"
+        aria-controls="navbarsExample08"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            for (var i = 0; i < selectedFeatures.length; i++) {
-                var selectedFeature = selectedFeatures[i].value;
-                var scoreRange = scoreRanges[selectedFeature];
-                var scoreInput = document.getElementById("Score_Feature" + (i + 1));
-                var scoreValue = document.getElementById("Score_Feature" + (i + 1) + "_Value");
+      <div
+        class="collapse navbar-collapse justify-content-md-center"
+        id="navbarsExample08">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Centered nav only <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdown08"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Dropdown</a
+            >
+            <div class="dropdown-menu" aria-labelledby="dropdown08">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-                if (scoreRange) {
-                    scoreInput.min = scoreRange.min;
-                    scoreInput.max = scoreRange.max;
-                    scoreValue.innerText = scoreInput.value;
-                } else {
-                    scoreInput.min = 0;
-                    scoreInput.max = 90;
-                    scoreValue.innerText = "";
-                }
-            }
-        }
-    </script>
-</head>
-<body>
-    <h1>PD-PREVeNT</h1>
-    <div class="form-container">
-        <form action="/submit" method="POST">
-            <label for="Gender">Gender:</label>
-            <select name="Gender" id="Gender">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select><br><br>
-
-            <label for="Age">Age:</label>
-            <input type="number" name="Age" id="Age"><br><br>
-
-            <label for="Feature1">Feature 1:</label>
-            <select class="feature-select" name="Feature1" onchange="updateScoreRange()">
-                <option value="">Select a feature</option>
-                <option value="Anxiety">Anxiety</option>
-                <option value="Apathy">Apathy</option>
-                <option value="Benton">Benton</option>
-            </select><br>
-            <label for="Score_Feature1">Score:</label>
-            <input type="range" class="slider" name="Score_Feature1" id="Score_Feature1" min="0" max="90" oninput="Score_Feature1_Value.innerText = Score_Feature1.value">
-            <span id="Score_Feature1_Value" class="slider-value"></span><br><br>
-
-            <label for="Feature2">Feature 2:</label>
-            <select class="feature-select" name="Feature2" onchange="updateScoreRange()">
-                <option value="">Select a feature</option>
-                <option value="Clock">Clock</option>
-                <option value="Cognition">Cognition</option>
-                <option value="COGSTATE">COGSTATE</option>
-            </select><br>
-            <label for="Score_Feature2">Score:</label>
-            <input type="range" class="slider" name="Score_Feature2" id="Score_Feature2" min="0" max="90" oninput="Score_Feature2_Value.innerText = Score_Feature2.value">
-            <span id="Score_Feature2_Value" class="slider-value"></span><br><br>
-
-            <label for="Feature3">Feature 3:</label>
-            <select class="feature-select" name="Feature3" onchange="updateScoreRange()">
-                <option value="">Select a feature</option>
-                <option value="Constipate">Constipate</option>
-                <option value="Depress">Depress</option>
-                <option value="DopaDefic">DopaDefic</option>
-            </select><br>
-            <label for="Score_Feature3">Score:</label>
-            <input type="range" class="slider" name="Score_Feature3" id="Score_Feature3" min="0" max="90" oninput="Score_Feature3_Value.innerText = Score_Feature3.value">
-            <span id="Score_Feature3_Value" class="slider-value"></span><br><br>
-
-            <input type="submit" value="Submit">
-        </form>
+    <!--
+   ███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗     
+   ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     
+   ██╔████╔██║██║   ██║██║  ██║███████║██║     
+   ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     
+   ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗
+   ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+  -->
+    <div
+      class="modal fade"
+      id="resultModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="resultModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resultModalLabel">Result aa gaya</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">this is the result</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">OK</button>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+
+    <!--
+      
+      ███████╗ ██████╗ ██████╗ ███╗   ███╗
+      ██╔════╝██╔═══██╗██╔══██╗████╗ ████║
+      █████╗  ██║   ██║██████╔╝██╔████╔██║
+      ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
+      ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+      ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
+                                          
+     -->
+    <div class="container">
+      <div class="py-5 text-center">
+        <img
+          class="d-block mx-auto mb-4"
+          src="https://fastly.picsum.photos/id/907/200/300.jpg?hmac=BYvJHklGn1KzEhHiZTkbQtFiRXUET5zYdLLKS6RXF3I"
+          alt=""
+          width="72"
+          height="72" />
+        <h2>PD-Prevent</h2>
+        <p class="lead">
+          Below is an example form built entirely with Bootstrap's form
+          controls. Each required form group has a validation state that can be
+          triggered by attempting to submit the form without completing it.
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Risk profile</span>
+            <span class="badge badge-secondary badge-pill factors-count"
+              >0</span
+            >
+          </h4>
+          <ul class="list-group mb-3" id="listOfRisks"></ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Risk assessment form</h4>
+          <form
+            novalidate=""
+            method="POST"
+            action="/submit"
+            class="needs-validation"
+            id="pdpForm">
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="username">Name</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  autocomplete="off"
+                  placeholder="Name" />
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Gender -->
+              <div class="col-md-6 mb-3">
+                <label for="firstName">Gender</label>
+                <div class="form-group">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="Male"
+                      value="Male" />
+                    <label class="form-check-label" for="Male">Male</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="Female"
+                      value="Female" />
+                    <label class="form-check-label" for="Female">Female</label>
+                  </div>
+                </div>
+                <div class="invalid-feedback">Valid name is required.</div>
+              </div>
+              <!-- Age -->
+              <div class="col-md-6 mb-3">
+                <label for="Age">Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="Age"
+                  placeholder=""
+                  value=""
+                  required="" />
+                <div class="invalid-feedback">Valid last name is required.</div>
+              </div>
+            </div>
+
+            <hr class="mb-4" />
+
+            <!-- SWS add new factor START-->
+            <div class="form-group row my-5" id="swsTopEl">
+              <div class="col-12">
+                <label for="email"
+                  >Add tests or symptoms
+                  <span class="text-muted">(minimum 3 required)</span></label
+                >
+              </div>
+              <div class="col-6 mb-3 mb-sm-5 selectpicker-wrp">
+                <select
+                  id="swsFactors"
+                  class="selectpicker"
+                  data-live-search="true"
+                  data-show-subtext="true"
+                  title="Select a test or symptom"
+                  data-style="btn-selectpicker-swsFactors">
+                  <!-- <option data-subtext="one">One</option>
+                  <option data-subtext="Two">Two</option>
+                  <option data-subtext="Three">Three</option>
+                  <option data-subtext="Four">Four</option> -->
+                </select>
+                <label
+                  class="text-danger small font-weight-bold error-helper"
+                  for="swsFactors">
+                </label>
+              </div>
+              <div class="col-6 mb-3">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  onclick="addNewFactor(this)">
+                  Add this factor
+                </button>
+              </div>
+            </div>
+            <!-- SWS add new factor ENDS -->
+
+            <hr class="my-4" />
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit">
+              Calculate my risk profile
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">© 2023 Pd-Prevent</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+
+    <!-- 
+  ███████╗ ██████╗██████╗ ██╗██████╗ ████████╗███████╗
+  ██╔════╝██╔════╝██╔══██╗██║██╔══██╗╚══██╔══╝██╔════╝
+  ███████╗██║     ██████╔╝██║██████╔╝   ██║   ███████╗
+  ╚════██║██║     ██╔══██╗██║██╔═══╝    ██║   ╚════██║
+  ███████║╚██████╗██║  ██║██║██║        ██║   ███████║
+  ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   ╚══════╝                                                
+ -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+    <script>
+      const getSummaryItemHTML = ({ description, label, value, id }) => `
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                  <h6 class="my-0">${label}</h6>
+                  ${
+                    description
+                      ? `<small class='text-muted'>${description}</small>`
+                      : ""
+                  }
+                </div>
+                <span class="text-muted" id="summaryVal${id}">${value}</span>
+              </li>`;
+
+      const getItemHTML = ({ id, min, max, label, step, value }) => `
+          <div class="form-group mb-4" id="container${id}">
+                <label for="${id}">${label}</label>
+                <div class="row">
+                  <div class="col-8">
+                    <input
+                      min="${min}"
+                      max="${max}"
+                      id="${id}"
+                      step="${step}"
+                      value="${value}"
+                      type="range"
+                      class="form-control-range factors-input"
+                      oninput="handleRangeChange(this);"
+                    />
+                  </div>
+                  <span class="col-4 current-value" for="${id}"
+                    >Current value: ${value}</span
+                  >
+                </div>
+              </div>`;
+
+      const config = {
+        Anxiety: {
+          type: "range",
+          description: "THis is a small description about this important test.",
+          info: "",
+          label: "Score of Anxiety",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        Apathy: {
+          type: "range",
+          label: "Score of Apathy",
+          min: 0,
+          max: 2,
+          value: 1,
+        },
+        Benton: {
+          type: "range",
+          label: "Score of Benton",
+          min: 5.1,
+          max: 16.38,
+          value: 10,
+        },
+        Clock: {
+          type: "range",
+          label: "Score of Clock",
+          min: 1,
+          max: 7,
+          value: 4,
+        },
+        Cognition: {
+          type: "range",
+          label: "Score of Cognition",
+          min: 0,
+          max: 2,
+          value: 1,
+        },
+        COGSTATE: {
+          type: "range",
+          label: "Score of COGSTATE",
+          min: 1,
+          max: 2,
+          value: 1,
+          step: 1,
+        },
+        Constipate: {
+          type: "range",
+          label: "Score of Constipate",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        Depress: {
+          type: "range",
+          label: "Score of Depress",
+          min: 0,
+          max: 4,
+          value: 1,
+        },
+        DopaDefic: {
+          type: "range",
+          label: "Score of DopaDefic",
+          min: 0,
+          max: 2,
+          value: 1,
+        },
+        Education: {
+          type: "range",
+          label: "Score of Education",
+          min: 8,
+          max: 26,
+          value: 12,
+        },
+        Epworth: {
+          type: "range",
+          label: "Score of Epworth",
+          min: 0,
+          max: 11,
+          value: 5,
+        },
+        Fatigue: {
+          type: "range",
+          label: "Score of Fatigue",
+          min: 0,
+          max: 4,
+          value: 2,
+        },
+        Geriatric_Depression: {
+          type: "range",
+          label: "Score of Geriatric_Depression",
+          min: 1,
+          max: 15,
+          value: 6,
+        },
+        Hallucination: {
+          type: "range",
+          label: "Score of Hallucination",
+          min: 0,
+          max: 1,
+          value: 0,
+          step: 1,
+        },
+        Hand: {
+          type: "range",
+          label: "Score of Hand",
+          min: 1,
+          max: 3,
+          value: 1,
+        },
+        Hopkins: {
+          type: "range",
+          label: "Score of Hopkins",
+          min: 20,
+          max: 64,
+          value: 30,
+        },
+        Hopkins_Recog: {
+          type: "range",
+          label: "Score of Hopkins_Recog",
+          min: 20,
+          max: 61,
+          value: 30,
+        },
+        Impulsive_CompulsiveBehavior: {
+          type: "range",
+          label: "Score of Impulsive_CompulsiveBehavior",
+          min: 0,
+          max: 1,
+          value: 1,
+          step: 1,
+        },
+        Impulsive_ICD: {
+          type: "range",
+          label: "Score of Impulsive_ICD",
+          min: 0,
+          max: 4,
+          value: 0,
+        },
+        LetterNumber: {
+          type: "range",
+          label: "Score of LetterNumber",
+          min: 4,
+          max: 19,
+          value: 10,
+        },
+        Lexical_Fluency: {
+          type: "range",
+          label: "Score of Lexical_Fluency",
+          min: 11,
+          max: 101,
+          value: 50,
+        },
+        LightHead: {
+          type: "range",
+          label: "Score of LightHead",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        Modif_Boston: {
+          type: "range",
+          label: "Score of Modif_Boston",
+          min: 8,
+          max: 60,
+          value: 30,
+        },
+        Montreal_Cognitive: {
+          type: "range",
+          label: "Score of Montreal_Cognitive",
+          min: 17,
+          max: 30,
+          value: 20,
+        },
+        Pain: {
+          type: "range",
+          label: "Score of Pain",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        REM_AwakeDream: {
+          type: "range",
+          label: "Score of REM_AwakeDream",
+          min: 0,
+          max: 1,
+          value: 0,
+          step: 1,
+        },
+        REM_AwakeProblem: {
+          type: "range",
+          label: "Score of REM_AwakeProblem",
+          min: 0,
+          max: 2,
+          value: 1,
+        },
+        REM_Dream: {
+          type: "range",
+          label: "Score of REM_Dream",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        REM_Movement: {
+          type: "range",
+          label: "Score of REM_Movement",
+          min: 0,
+          max: 6,
+          value: 1,
+        },
+        SCOPA_Cardio: {
+          type: "range",
+          label: "Score of SCOPA_Cardio",
+          min: 0,
+          max: 6,
+          value: 1,
+        },
+        SCOPA_Eye: {
+          type: "range",
+          label: "Score of SCOPA_Eye",
+          min: 0,
+          max: 3,
+          value: 1,
+        },
+        SCOPA_Gastro: {
+          type: "range",
+          label: "Score of SCOPA_Gastro",
+          min: 0,
+          max: 9,
+          value: 1,
+        },
+        SCOPA_Sex: {
+          type: "range",
+          label: "Score of SCOPA_Sex",
+          min: 0,
+          max: 6,
+          value: 1,
+        },
+        SCOPA_Thermo: {
+          type: "range",
+          label: "Score of SCOPA_Thermo",
+          min: 0,
+          max: 6,
+          value: 1,
+        },
+        SCOPA_Urine: {
+          type: "range",
+          label: "Score of SCOPA_Urine",
+          min: 0,
+          max: 17,
+          value: 1,
+        },
+        Semantic: {
+          type: "range",
+          label: "Score of Semantic",
+          min: 25,
+          max: 81,
+          value: 60,
+        },
+        SleepDay: {
+          type: "range",
+          label: "Score of SleepDay",
+          min: 0,
+          max: 2,
+          value: 1,
+        },
+        SleepNight: {
+          type: "range",
+          label: "Score of SleepNight",
+          min: 0,
+          max: 4,
+          value: 1,
+        },
+        STAIA: {
+          type: "range",
+          label: "Score of STAIA",
+          min: 31,
+          max: 54,
+          value: 40,
+        },
+        STAIS: {
+          type: "range",
+          label: "Score of STAIS",
+          min: 19,
+          max: 59,
+          value: 40,
+        },
+        Symbol_Digit: {
+          type: "range",
+          label: "Score of Symbol_Digit",
+          min: 20,
+          max: 80,
+          value: 60,
+        },
+        Trail_Making_A: {
+          type: "range",
+          label: "Score of Trail_Making_A",
+          min: 13,
+          max: 150,
+          value: 100,
+        },
+        Trail_Making_B: {
+          type: "range",
+          label: "Score of Trail_Making_B",
+          min: 20,
+          max: 294,
+          value: 100,
+        },
+        UPSIT: {
+          type: "range",
+          label: "Score of UPSIT",
+          min: 0,
+          max: 40,
+          value: 30,
+        },
+        Urine: {
+          type: "range",
+          label: "Score of Urine",
+          min: 0,
+          max: 4,
+          value: 2,
+        },
+      };
+
+      const showSWSError = ({ message }) => {
+        const errorMsgEl = document.querySelector(
+          "label.text-danger.small.font-weight-bold.error-helper"
+        );
+        errorMsgEl.innerText = message;
+        document.querySelector(".selectpicker-wrp").classList.add("error-show");
+      };
+
+      const removeSWSError = () => {
+        document
+          .querySelector(".selectpicker-wrp")
+          .classList.remove("error-show");
+      };
+
+      const addNewFactor = (event) => {
+        var selectedItemValue = $(".selectpicker").val();
+        console.log(selectedItemValue);
+        if (!selectedItemValue) {
+          showSWSError({ message: "Please select a value from the dropdown" });
+        } else {
+          removeSWSError();
+
+          const selectedConfigItemKey = Object.keys(config).find(
+            (configItemKey) => config[configItemKey].label === selectedItemValue
+          );
+
+          if (
+            document.querySelectorAll(`#container${selectedConfigItemKey}`)
+              .length
+          ) {
+            showSWSError({
+              message: "This value already exists",
+            });
+            return;
+          }
+
+          const formHTMLToBeInserted = getItemHTML({
+            id: selectedConfigItemKey,
+            ...config[selectedConfigItemKey],
+          });
+          const summaryHTMLToBeInserted = getSummaryItemHTML({
+            id: selectedConfigItemKey,
+            ...config[selectedConfigItemKey],
+          });
+
+          const topLevelElement = document.getElementById("swsTopEl");
+          $(formHTMLToBeInserted).insertBefore(topLevelElement);
+
+          const summaryULContainer = document.getElementById("listOfRisks");
+          $(summaryHTMLToBeInserted).insertBefore(summaryULContainer);
+        }
+      };
+
+      const handleRangeChange = (props) => {
+        const currentValElement = document.querySelector(
+          `[for=${props.id}].current-value`
+        );
+        currentValElement.innerText = `Current value: ${props.value}`;
+
+        const summaryULContainer = document.getElementById(
+          `summaryVal${props.id}`
+        );
+
+        summaryULContainer.innerText = props.value;
+      };
+
+      $(document).ready(function () {
+        console.log("ready!");
+        console.log($("#swsFactors"));
+        // <option data-subtext="Two">Two</option>
+
+        const wrapperElement = new DocumentFragment();
+
+        for (item of Object.values(config)) {
+          const optionElement = document.createElement("option");
+          optionElement.innerText = item.label;
+          wrapperElement.append(optionElement);
+        }
+        $("#swsFactors").append(wrapperElement);
+      });
+
+      $("#pdpForm").bind("submit", async function (e) {
+        e.preventDefault();
+
+        var genderEl = document.querySelector('[name="gender"]:checked');
+        var ageEl = document.querySelector("#Age");
+        var factorsInputArr = document.querySelectorAll(
+          "input.form-control-range.factors-input"
+        );
+
+        if (!genderEl || !genderEl.value) {
+          return alert("Pls input gender");
+        }
+        if (!ageEl || !ageEl.value) {
+          return alert("Pls input age");
+        }
+
+        if (factorsInputArr.length < 3) {
+          return alert("Pls select at least 3 factors to continue");
+        }
+
+        var formData = new FormData();
+        formData.append("Gender", genderEl.value);
+        formData.append("Age", ageEl.value);
+        formData.append("num_features", factorsInputArr.length);
+
+        // Feature1=Anxiety&Score_Feature1=3
+
+        factorsInputArr.forEach((item, index) => {
+          formData.append(`Feature${index + 1}`, item.id);
+          formData.append(`Score_Feature${index + 1}`, item.value);
+        });
+
+        // ███████╗██╗   ██╗██████╗ ███╗   ███╗██╗████████╗████████╗██╗███╗   ██╗ ██████╗
+        // ██╔════╝██║   ██║██╔══██╗████╗ ████║██║╚══██╔══╝╚══██╔══╝██║████╗  ██║██╔════╝
+        // ███████╗██║   ██║██████╔╝██╔████╔██║██║   ██║      ██║   ██║██╔██╗ ██║██║  ███╗
+        // ╚════██║██║   ██║██╔══██╗██║╚██╔╝██║██║   ██║      ██║   ██║██║╚██╗██║██║   ██║
+        // ███████║╚██████╔╝██████╔╝██║ ╚═╝ ██║██║   ██║      ██║   ██║██║ ╚████║╚██████╔╝
+        // ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝
+        //
+
+        try {
+          let response = await fetch("/submit", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+
+          $("#resultModal").modal();
+        } catch (error) {
+          $("#resultModal").modal({});
+        }
+      });
+    </script>
+  </body>
 </html>

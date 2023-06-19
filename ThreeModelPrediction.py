@@ -271,4 +271,4 @@ else:
     sum_difference = (high_cat_sum - low_cat_sum)/3 * 100
 round_differ = "{:.2f}".format(sum_difference)
 
-print("The user might fall under category of " + most_frequent + ", and the confidence score is " + str(round_differ))
+print( most_frequent + "#" + str(round_differ))
