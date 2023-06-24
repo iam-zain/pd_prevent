@@ -37,12 +37,22 @@ def submit():
     command = f'python ThreeModelPrediction.py {age} {len(feature_scores)} {input_str}'
     output = subprocess.getoutput(command)
     out_split = output.split("#")
-    numeric_value = int(''.join(filter(str.isdigit, output)))
+    userInfo = out_split[0]
+    #userStatus = userInfo [-7:]
+    if "Patient" in userInfo:
+        userStatus = "Patient"
+    elif "Healthy" in userInfo:
+        userStatus = "Healthy"
+    else:
+        userStatus = "Unknown"
 
+    confidenceScore = out_split[1]
+    
     data = {
-        'output':output, 'numeric_value':numeric_value
+        'userStatus':str(userStatus), 'confidenceScore': float(confidenceScore)
     }
-    return out_split
+    return data
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

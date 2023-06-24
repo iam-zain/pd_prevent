@@ -16,9 +16,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import confusion_matrix, accuracy_score
 warnings.filterwarnings("ignore")
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-#os.chdir ('./csv')
 df = pd.read_csv('Feats45_unCategAge_APPRDX.csv')
 df1 = df.drop(['PATNO','APPRDX'], axis = 1)
 df2 = pd.read_csv('NonMotor_Empty.csv')
@@ -271,4 +270,4 @@ else:
     sum_difference = (high_cat_sum - low_cat_sum)/3 * 100
 round_differ = "{:.2f}".format(sum_difference)
 
-print( most_frequent + "#" + str(round_differ))
+print( most_frequent + "#" + (round_differ))
