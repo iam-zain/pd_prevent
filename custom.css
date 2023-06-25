@@ -1,0 +1,49 @@
+.selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder,
+.selectpicker-wrp.error-show
+  button.btn.dropdown-toggle.btn-selectpicker-swsFactors,
+.selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:active,
+.selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:focus,
+.selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:hover {
+  border-color: #dc3545;
+}
+
+label.text-danger.small.font-weight-bold.error-helper {
+  opacity: 0;
+  left: 15px;
+  bottom: -30px;
+  position: absolute;
+}
+
+.selectpicker-wrp.error-show
+  label.text-danger.small.font-weight-bold.error-helper {
+  opacity: 1;
+}
+
+.selectpicker-wrp {
+  position: relative;
+}
+
+.form-check.form-check-inline,
+.form-check.form-check-inline label,
+input.form-control-range.factors-input,
+.form-check.form-check-inline input {
+  cursor: pointer;
+}
+
+.right-sidebar {
+  border-left: 1px solid #bbb;
+}
+
+.loader-mask {
+  background-color: #00000066;
+}
+
+.loader-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.remove-feature {
+  cursor: pointer;
+}
