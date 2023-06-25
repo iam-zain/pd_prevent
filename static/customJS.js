@@ -187,7 +187,7 @@ $("#pdpForm").bind("submit", async function (e) {
     });
     const result = await response.json();
     console.log(result, "PENDING PASS SCENARIO HANDLING");
-    var dd = result.confidenceScore;
+    var dd = parseInt(result.confidenceScore);
     var PP = result.userStatus;
     document.getElementById("resultProgressbar").style = `--value: ${dd}`;
     document.getElementById("resultText").innerText = PP;
