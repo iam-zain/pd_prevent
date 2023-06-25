@@ -4,212 +4,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PD-PREVeNT</title>
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/825/825590.png" type="image/png" />
+    <title>PDP</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous" />
+      crossorigin="anonymous"
+    />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/css/bootstrap-select.min.css" />
-    <style>
-      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder,
-      .selectpicker-wrp.error-show
-        button.btn.dropdown-toggle.btn-selectpicker-swsFactors,
-      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:active,
-      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:focus,
-      .selectpicker-wrp.error-show .dropdown-toggle.bs-placeholder:hover {
-        border-color: #dc3545;
-      }
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.18/dist/css/bootstrap-select.min.css"
+    />
 
-      label.text-danger.small.font-weight-bold.error-helper {
-        opacity: 0;
-        left: 15px;
-        bottom: -30px;
-        position: absolute;
-      }
-
-      .selectpicker-wrp.error-show
-        label.text-danger.small.font-weight-bold.error-helper {
-        opacity: 1;
-      }
-
-      .selectpicker-wrp {
-        position: relative;
-      }
-
-      .form-check.form-check-inline,
-      .form-check.form-check-inline label,
-      input.form-control-range.factors-input,
-      .form-check.form-check-inline input {
-        cursor: pointer;
-      }
-
-      .right-sidebar {
-        border-left: 1px solid #bbb;
-      }
-    </style>
-
-    <!-- LOADER -->
-    <style>
-      * {
-        border: 0;
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --hue: 223;
-        --bg: hsl(var(--hue), 90%, 95%);
-        --fg: hsl(var(--hue), 90%, 5%);
-        --trans-dur: 0.3s;
-      }
-
-      main {
-        padding: 1.5em 0;
-      }
-      .ip {
-        width: 16em;
-        height: 8em;
-      }
-      .ip__track {
-        stroke: hsl(var(--hue), 90%, 90%);
-        transition: stroke var(--trans-dur);
-      }
-      .ip__worm1,
-      .ip__worm2 {
-        animation: worm1 2s linear infinite;
-      }
-      .ip__worm2 {
-        animation-name: worm2;
-      }
-
-      /* Dark theme */
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: hsl(var(--hue), 90%, 5%);
-          --fg: hsl(var(--hue), 90%, 95%);
-        }
-        .ip__track {
-          stroke: hsl(var(--hue), 90%, 15%);
-        }
-      }
-
-      /* Animation */
-      @keyframes worm1 {
-        from {
-          stroke-dashoffset: 0;
-        }
-        50% {
-          animation-timing-function: steps(1);
-          stroke-dashoffset: -358;
-        }
-        50.01% {
-          animation-timing-function: linear;
-          stroke-dashoffset: 358;
-        }
-        to {
-          stroke-dashoffset: 0;
-        }
-      }
-      @keyframes worm2 {
-        from {
-          stroke-dashoffset: 358;
-        }
-        50% {
-          stroke-dashoffset: 0;
-        }
-        to {
-          stroke-dashoffset: -358;
-        }
-      }
-    </style>
-
-    <style>
-      .loader-mask {
-        background-color: #00000066;
-      }
-
-      .loader-text {
-        color: #fff;
-        font-size: 16px;
-        font-weight: 600;
-      }
-
-      .remove-feature {
-        cursor: pointer;
-      }
-    </style>
-
-    <style>
-      /* PROGRESS BAR */
-
-      @keyframes progress {
-        0% {
-          --percentage: 0;
-        }
-        100% {
-          --percentage: var(--value);
-        }
-      }
-
-      [role="progressbar"] {
-        --percentage: var(--value);
-        --primary: #369;
-        --secondary: #adf;
-        --size: 300px;
-        animation: progress 2s 0.5s forwards;
-        width: var(--size);
-        aspect-ratio: 1;
-        border-radius: 50%;
-        position: relative;
-        overflow: hidden;
-        display: grid;
-        place-items: center;
-      }
-
-      [role="progressbar"]::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: conic-gradient(
-          var(--primary) calc(var(--percentage) * 1%),
-          var(--secondary) 0
-        );
-        mask: radial-gradient(white 55%, transparent 0);
-        mask-mode: alpha;
-        -webkit-mask: radial-gradient(#0000 55%, #000 0);
-        -webkit-mask-mode: alpha;
-      }
-
-      [role="progressbar"]::after {
-        counter-reset: percentage var(--value);
-        content: counter(percentage) "%";
-        font-family: Helvetica, Arial, sans-serif;
-        font-size: calc(var(--size) / 5);
-        color: var(--primary);
-      }
-    </style>
+    <link rel="stylesheet" href="./loader.css" />
+    <link rel="stylesheet" href="./custom.css" />
+    <link rel="stylesheet" href="./progressbar.css" />
   </head>
   <body>
     <!-- Loading -->
 
     <div
       id="fullPageLoader"
-      class="loader-mask modal justify-content-center align-items-center flex-column">
+      class="loader-mask modal justify-content-center align-items-center flex-column"
+    >
       <main>
         <svg
           class="ip"
           viewBox="0 0 256 128"
           width="256px"
           height="128px"
-          xmlns="http://www.w3.org/2000/svg">
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
             <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stop-color="#5ebd3e" />
@@ -234,12 +59,14 @@
                 class="ip__worm1"
                 stroke="url(#grad1)"
                 stroke-dashoffset="0"
-                d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56" />
+                d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"
+              />
               <path
                 class="ip__worm2"
                 stroke="url(#grad2)"
                 stroke-dashoffset="358"
-                d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64" />
+                d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"
+              />
             </g>
           </g>
         </svg>
@@ -262,7 +89,8 @@
       data-backdrop="static"
       class="modal fade"
       aria-labelledby="resultModalLabel"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -271,7 +99,8 @@
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close">
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -286,7 +115,8 @@
             <button
               type="button"
               class="btn btn-secondary"
-              data-dismiss="modal">
+              data-dismiss="modal"
+            >
               Close
             </button>
             <button type="button" class="btn btn-primary">OK</button>
@@ -309,20 +139,22 @@
       <div class="py-5 text-center">
         <img
           class="d-block mx-auto mb-4"
-          src="https://blog.edmentum.com/sites/blog.edmentum.com/files/images/StudyIslandFeatureFocusBenchmarking.png"
+          src="https://fastly.picsum.photos/id/907/200/300.jpg?hmac=BYvJHklGn1KzEhHiZTkbQtFiRXUET5zYdLLKS6RXF3I"
           alt=""
-          width="92"
-          height="60" />
-        <h2>PD-PREVeNT</h2>
+          width="72"
+          height="72"
+        />
+        <h2>PD-Prevent</h2>
         <p class="lead">
-          Parkinson's Disease - Prognostic Risk Evaluation using Vital Non-motor Tests
+          Below is an example form built entirely with Bootstrap's form
+          controls.
         </p>
       </div>
 
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4 right-sidebar">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Tests or symptoms added</span>
+            <span class="text-muted">Tests and symptoms added</span>
             <span class="badge badge-secondary badge-pill factors-count"
               >0</span
             >
@@ -336,7 +168,8 @@
             method="POST"
             action="/submit"
             class="needs-validation"
-            id="pdpForm">
+            id="pdpForm"
+          >
             <!-- Name -->
             <div class="mb-3">
               <strong for="username"
@@ -348,7 +181,8 @@
                   id="username"
                   autocomplete="off"
                   placeholder="Name"
-                  class="form-control" />
+                  class="form-control"
+                />
               </div>
             </div>
 
@@ -363,7 +197,8 @@
                       type="radio"
                       name="gender"
                       value="Male"
-                      class="form-check-input" />
+                      class="form-check-input"
+                    />
                     <label class="form-check-label" for="Male">Male</label>
                   </div>
                   <div class="form-check form-check-inline">
@@ -372,7 +207,8 @@
                       type="radio"
                       name="gender"
                       class="form-check-input"
-                      value="Female" />
+                      value="Female"
+                    />
                     <label class="form-check-label" for="Female">Female</label>
                   </div>
                 </div>
@@ -389,7 +225,8 @@
                   required=""
                   type="number"
                   class="form-control"
-                  placeholder="Enter your age in years" />
+                  placeholder="Enter your age in years"
+                />
                 <div class="invalid-feedback">Valid last name is required.</div>
               </div>
             </div>
@@ -410,22 +247,20 @@
                   data-show-subtext="true"
                   data-width="100%"
                   title="Select a test or symptom"
-                  data-style="btn-selectpicker-swsFactors">
-                  <!-- <option data-subtext="one">One</option>
-                  <option data-subtext="Two">Two</option>
-                  <option data-subtext="Three">Three</option>
-                  <option data-subtext="Four">Four</option> -->
-                </select>
+                  data-style="btn-selectpicker-swsFactors"
+                ></select>
                 <label
                   class="text-danger small font-weight-bold error-helper"
-                  for="swsFactors">
+                  for="swsFactors"
+                >
                 </label>
               </div>
               <div class="col-6 mb-3">
                 <button
                   type="button"
                   class="btn btn-outline-secondary"
-                  onclick="addNewFactor(this)">
+                  onclick="addNewFactor(this)"
+                >
                   Add this factor
                 </button>
               </div>
@@ -435,7 +270,8 @@
             <button
               class="btn btn-primary btn-lg btn-block"
               type="submit"
-              id="submitFormCTA">
+              id="submitFormCTA"
+            >
               Calculate my risk profile
             </button>
           </form>
@@ -443,7 +279,7 @@
       </div>
 
       <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">© 2023 PD-PREVeNT</p>
+        <p class="mb-1">© 2023 Pd-Prevent</p>
         <ul class="list-inline">
           <li class="list-inline-item"><a href="#">Privacy</a></li>
           <li class="list-inline-item"><a href="#">Terms</a></li>
@@ -460,613 +296,26 @@
   ███████║╚██████╗██║  ██║██║██║        ██║   ███████║
   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   ╚══════╝                                                
  -->
+    <script src="./factorsConfig.js"></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
       integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 
-    <!--
-          __        __  ___  __                 __  
-         /  ` |  | /__`  |  /  \  |\/|       | /__` 
-         \__, \__/ .__/  |  \__/  |  |    \__/ .__/ 
-                                                    
-     -->
-    <script>
-      const getSummaryItemHTML = ({ description, label, value, id }) => `
-              <li id="summary${id}" class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                  <h6 class="my-0">${label}</h6>
-                  ${
-                    description
-                      ? `<small class='text-muted'>${description}</small>`
-                      : ""
-                  }
-                </div>
-                <span class="text-muted" id="summaryVal${id}">${value}</span>
-              </li>`;
-
-      const getItemHTML = ({ id, min, max, label, step, value }) => `
-      <div class="form-group mb-4" id="container${id}">
-        <label for="${id}"
-          >${label}<span class="text-muted">(min: ${min}, max: ${max})</span>
-          <span data-toggle="tooltip" title="Remove this factor" data-placement="bottom" class="remove-feature" onclick="removeFeature(${id})">⛔️</span>
-        </label>
-        <div class="row">
-          <div class="col-9 d-flex">
-            <input
-              id="${id}"
-              min="${min}"
-              max="${max}"
-              type="range"
-              step="${step}"
-              value="${value}"
-              class="form-control-range factors-input"
-              oninput="handleRangeChange(this);" />
-          </div>
-
-          <div class="col-3 d-flex">
-            <input
-              min="${min}"
-              max="${max}"
-              type="number"
-              step="${step}"
-              value="${value}"
-              required
-              id="${id}_current"
-              class="form-control factors-input factors-input-box"
-              oninput="validity.valid||handleRangeInput(this, ${id});" />
-          </div>
-        </div>
-      </div>`;
-
-      const config = {
-        Anxiety: {
-          type: "range",
-          description: "This is a small description about this important test.",
-          info: "This is an info",
-          label: "Score of Anxiety",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        Apathy: {
-          type: "range",
-          label: "Score of Apathy",
-          min: 0,
-          max: 2,
-          value: 1,
-        },
-        Benton: {
-          type: "range",
-          label: "Score of Benton",
-          min: 5.1,
-          max: 16.38,
-          value: 10,
-        },
-        Clock: {
-          type: "range",
-          label: "Score of Clock",
-          min: 1,
-          max: 7,
-          value: 4,
-        },
-        Cognition: {
-          type: "range",
-          label: "Score of Cognition",
-          min: 0,
-          max: 2,
-          value: 1,
-        },
-        COGSTATE: {
-          type: "range",
-          label: "Score of COGSTATE",
-          min: 1,
-          max: 2,
-          value: 1,
-          step: 1,
-        },
-        Constipate: {
-          type: "range",
-          label: "Score of Constipate",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        Depress: {
-          type: "range",
-          label: "Score of Depress",
-          min: 0,
-          max: 4,
-          value: 1,
-        },
-        DopaDefic: {
-          type: "range",
-          label: "Score of DopaDefic",
-          min: 0,
-          max: 2,
-          value: 1,
-        },
-        Education: {
-          type: "range",
-          label: "Score of Education",
-          min: 8,
-          max: 26,
-          value: 12,
-        },
-        Epworth: {
-          type: "range",
-          label: "Score of Epworth",
-          min: 0,
-          max: 11,
-          value: 5,
-        },
-        Fatigue: {
-          type: "range",
-          label: "Score of Fatigue",
-          min: 0,
-          max: 4,
-          value: 2,
-        },
-        Geriatric_Depression: {
-          type: "range",
-          label: "Score of Geriatric_Depression",
-          min: 1,
-          max: 15,
-          value: 6,
-        },
-        Hallucination: {
-          type: "range",
-          label: "Score of Hallucination",
-          min: 0,
-          max: 1,
-          value: 0,
-          step: 1,
-        },
-        Hand: {
-          type: "range",
-          label: "Score of Hand",
-          min: 1,
-          max: 3,
-          value: 1,
-        },
-        Hopkins: {
-          type: "range",
-          label: "Score of Hopkins",
-          min: 20,
-          max: 64,
-          value: 30,
-        },
-        Hopkins_Recog: {
-          type: "range",
-          label: "Score of Hopkins_Recog",
-          min: 20,
-          max: 61,
-          value: 30,
-        },
-        Impulsive_CompulsiveBehavior: {
-          type: "range",
-          label: "Score of Impulsive_CompulsiveBehavior",
-          min: 0,
-          max: 1,
-          value: 1,
-          step: 1,
-        },
-        Impulsive_ICD: {
-          type: "range",
-          label: "Score of Impulsive_ICD",
-          min: 0,
-          max: 4,
-          value: 0,
-        },
-        LetterNumber: {
-          type: "range",
-          label: "Score of LetterNumber",
-          min: 4,
-          max: 19,
-          value: 10,
-        },
-        Lexical_Fluency: {
-          type: "range",
-          label: "Score of Lexical_Fluency",
-          min: 11,
-          max: 101,
-          value: 50,
-        },
-        LightHead: {
-          type: "range",
-          label: "Score of LightHead",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        Modif_Boston: {
-          type: "range",
-          label: "Score of Modif_Boston",
-          min: 8,
-          max: 60,
-          value: 30,
-        },
-        Montreal_Cognitive: {
-          type: "range",
-          label: "Score of Montreal_Cognitive",
-          min: 17,
-          max: 30,
-          value: 20,
-        },
-        Pain: {
-          type: "range",
-          label: "Score of Pain",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        REM_AwakeDream: {
-          type: "range",
-          label: "Score of REM_AwakeDream",
-          min: 0,
-          max: 1,
-          value: 0,
-          step: 1,
-        },
-        REM_AwakeProblem: {
-          type: "range",
-          label: "Score of REM_AwakeProblem",
-          min: 0,
-          max: 2,
-          value: 1,
-        },
-        REM_Dream: {
-          type: "range",
-          label: "Score of REM_Dream",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        REM_Movement: {
-          type: "range",
-          label: "Score of REM_Movement",
-          min: 0,
-          max: 6,
-          value: 1,
-        },
-        SCOPA_Cardio: {
-          type: "range",
-          label: "Score of SCOPA_Cardio",
-          min: 0,
-          max: 6,
-          value: 1,
-        },
-        SCOPA_Eye: {
-          type: "range",
-          label: "Score of SCOPA_Eye",
-          min: 0,
-          max: 3,
-          value: 1,
-        },
-        SCOPA_Gastro: {
-          type: "range",
-          label: "Score of SCOPA_Gastro",
-          min: 0,
-          max: 9,
-          value: 1,
-        },
-        SCOPA_Sex: {
-          type: "range",
-          label: "Score of SCOPA_Sex",
-          min: 0,
-          max: 6,
-          value: 1,
-        },
-        SCOPA_Thermo: {
-          type: "range",
-          label: "Score of SCOPA_Thermo",
-          min: 0,
-          max: 6,
-          value: 1,
-        },
-        SCOPA_Urine: {
-          type: "range",
-          label: "Score of SCOPA_Urine",
-          min: 0,
-          max: 17,
-          value: 1,
-        },
-        Semantic: {
-          type: "range",
-          label: "Score of Semantic",
-          min: 25,
-          max: 81,
-          value: 60,
-        },
-        SleepDay: {
-          type: "range",
-          label: "Score of SleepDay",
-          min: 0,
-          max: 2,
-          value: 1,
-        },
-        SleepNight: {
-          type: "range",
-          label: "Score of SleepNight",
-          min: 0,
-          max: 4,
-          value: 1,
-        },
-        STAIA: {
-          type: "range",
-          label: "Score of STAIA",
-          min: 31,
-          max: 54,
-          value: 40,
-        },
-        STAIS: {
-          type: "range",
-          label: "Score of STAIS",
-          min: 19,
-          max: 59,
-          value: 40,
-        },
-        Symbol_Digit: {
-          type: "range",
-          label: "Score of Symbol_Digit",
-          min: 20,
-          max: 80,
-          value: 60,
-        },
-        Trail_Making_A: {
-          type: "range",
-          label: "Score of Trail_Making_A",
-          min: 13,
-          max: 150,
-          value: 100,
-        },
-        Trail_Making_B: {
-          type: "range",
-          label: "Score of Trail_Making_B",
-          min: 20,
-          max: 294,
-          value: 100,
-        },
-        UPSIT: {
-          type: "range",
-          label: "Score of UPSIT",
-          min: 0,
-          max: 40,
-          value: 30,
-        },
-        Urine: {
-          type: "range",
-          label: "Score of Urine",
-          min: 0,
-          max: 4,
-          value: 2,
-        },
-      };
-
-      const showSWSError = ({ message }) => {
-        const errorMsgEl = document.querySelector(
-          "label.text-danger.small.font-weight-bold.error-helper"
-        );
-        errorMsgEl.innerText = message;
-        document.querySelector(".selectpicker-wrp").classList.add("error-show");
-      };
-
-      const removeSWSError = () => {
-        document
-          .querySelector(".selectpicker-wrp")
-          .classList.remove("error-show");
-      };
-
-      const addNewFactor = (event) => {
-        var selectedItemValue = $(".selectpicker").val();
-        console.log(selectedItemValue);
-        if (!selectedItemValue) {
-          showSWSError({ message: "Please select a value from the dropdown" });
-        } else {
-          removeSWSError();
-
-          const selectedConfigItemKey = Object.keys(config).find(
-            (configItemKey) => config[configItemKey].label === selectedItemValue
-          );
-
-          if (
-            document.querySelectorAll(`#container${selectedConfigItemKey}`)
-              .length
-          ) {
-            showSWSError({
-              message: "This value already exists",
-            });
-            return;
-          }
-
-          const formHTMLToBeInserted = getItemHTML({
-            id: selectedConfigItemKey,
-            ...config[selectedConfigItemKey],
-          });
-          const summaryHTMLToBeInserted = getSummaryItemHTML({
-            id: selectedConfigItemKey,
-            ...config[selectedConfigItemKey],
-          });
-
-          const topLevelElement = document.getElementById("swsTopEl");
-          $(formHTMLToBeInserted).insertAfter(topLevelElement);
-
-          const summaryULContainer = document.getElementById("listOfRisks");
-          $(summaryHTMLToBeInserted).insertBefore(summaryULContainer);
-          updateCountOnFactorsChange();
-        }
-      };
-
-      const handleRangeChange = (props) => {
-        const currentInputElement = document.querySelector(
-          `#${props.id}_current`
-        );
-        currentInputElement.value = props.value;
-
-        const summaryULContainer = document.getElementById(
-          `summaryVal${props.id}`
-        );
-
-        summaryULContainer.innerText = props.value;
-      };
-
-      $(document).ready(function () {
-        console.log("ready!");
-        console.log($("#swsFactors"));
-        // <option data-subtext="Two">Two</option>
-
-        $('[data-toggle="tooltip"]').tooltip({ container: "body" });
-
-        window.CSS.registerProperty({
-          name: "--percentage",
-          syntax: "<number>",
-          inherits: true,
-          initialValue: 0,
-        });
-
-        const wrapperElement = new DocumentFragment();
-
-        for (item of Object.values(config)) {
-          const optionElement = document.createElement("option");
-          optionElement.innerText = item.label;
-          wrapperElement.append(optionElement);
-        }
-        $("#swsFactors").append(wrapperElement);
-      });
-
-      var validateAndGetFormData = () => {
-        var genderEl = document.querySelector('[name="gender"]:checked');
-        var ageEl = document.querySelector("#Age");
-        var factorsInputArr = document.querySelectorAll(
-          "input.form-control-range.factors-input"
-        );
-
-        if (!genderEl || !genderEl.value) {
-          throw new Error("Pls input gender");
-        }
-        if (!ageEl || !ageEl.value) {
-          throw new Error("Pls input age");
-        }
-
-        if (factorsInputArr.length < 3) {
-          throw new Error("Pls select at least 3 factors to continue");
-        }
-
-        // Gender=Male&Age=22&num_features=3&Feature1=Anxiety&Score_Feature1=3
-        var formData = new FormData();
-        formData.append("Gender", genderEl.value);
-        formData.append("Age", ageEl.value);
-        formData.append("num_features", factorsInputArr.length);
-
-        factorsInputArr.forEach((item, index) => {
-          formData.append(`Feature${index + 1}`, item.id);
-          formData.append(`Score_Feature${index + 1}`, item.value);
-        });
-
-        return formData;
-      };
-
-      var showLoadingOnSubmitCTA = (element, onClick) => {
-        const loaderModal = document.getElementById("fullPageLoader");
-        const submitFormCTAEl = document.getElementById("submitFormCTA");
-        loaderModal.classList.add("d-flex");
-        submitFormCTAEl.innerText = "Predicting using some AI Magic";
-        submitFormCTAEl.classList.add("disabled");
-      };
-
-      $("#pdpForm").bind("submit", async function (e) {
-        e.preventDefault();
-
-        try {
-          var formData = validateAndGetFormData();
-          showLoadingOnSubmitCTA();
-          let response = await fetch("/submit", {
-            method: "POST",
-            body: formData,
-          });
-          const result = await response.json();
-          console.log(result, "PENDING PASS SCENARIO HANDLING");
-          var dd = parseInt(result.confidenceScore);
-          var PP = result.userStatus;
-          document.getElementById("resultProgressbar").style = `--value: ${dd}`;
-          document.getElementById("resultText").innerText = PP;
-          $("#resultModal").modal();
-        } catch (error) {
-          resetSubmitButton();
-          alert(error);
-        }
-      });
-
-      const resetSubmitButton = () => {
-        const loaderModal = document.getElementById("fullPageLoader");
-        loaderModal.classList.remove("d-flex");
-
-        const submitFormCTAEl = document.getElementById("submitFormCTA");
-        submitFormCTAEl.innerText = "Calculate my risk profile";
-        submitFormCTAEl.classList.remove("disabled");
-      };
-
-      // Handle modal close
-      $("#resultModal").on("hide.bs.modal", resetSubmitButton);
-
-      const updateCountOnFactorsChange = () => {
-        const factorsInputArr = document.querySelectorAll(
-          "input.form-control-range.factors-input"
-        );
-
-        const factorsCounterEl = document.querySelector(
-          "span.badge.badge-secondary.badge-pill.factors-count"
-        );
-
-        factorsCounterEl.innerText = factorsInputArr.length;
-      };
-
-      const handleRangeInput = (event, { id }) => {
-        if (event.stopPropagation) {
-          event.stopPropagation();
-          event.preventDefault();
-        } else if (window.event) {
-          window.event.cancelBubble = true;
-        }
-
-        // const { min, max } = config[id];
-
-        const rangeSliderEl = document.getElementById(id);
-        rangeSliderEl.value = event.value;
-
-        const summaryULContainer = document.getElementById(`summaryVal${id}`);
-        summaryULContainer.innerText = event.value;
-      };
-
-      $("form").keypress(function (e) {
-        //Enter key
-        if (e.which == 13) {
-          return false;
-        }
-      });
-
-      const removeFeature = (element) => {
-        /* eslint-disable no-debugger, no-console */
-        const containerId = `container${element.id}`;
-        const summaryId = `summary${element.id}`;
-        console.log("id", containerId);
-        const itemToRemove = document.getElementById(containerId);
-        const summaryItemToRemove = document.getElementById(summaryId);
-        itemToRemove.remove();
-        summaryItemToRemove.remove();
-        updateCountOnFactorsChange();
-      };
-    </script>
+    <script src="./customJS.js"></script>
   </body>
 </html>

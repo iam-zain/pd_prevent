@@ -38,7 +38,7 @@ def submit():
     output = subprocess.getoutput(command)
     out_split = output.split("#")
     userInfo = out_split[0]
-    #userStatus = userInfo [-7:]
+    
     if "Patient" in userInfo:
         userStatus = "Patient"
     elif "Healthy" in userInfo:
