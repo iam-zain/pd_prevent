@@ -46,4 +46,29 @@ input.form-control-range.factors-input,
 
 .remove-feature {
   cursor: pointer;
+  margin: 0 6px;
+}
+
+.info-feature {
+  font-weight: 600;
+  padding: 0 5px;
+  border: 1px solid;
+  border-radius: 50%;
+  line-height: 16px;
+  cursor: help;
+  margin: 0 6px;
+}
+
+.info-feature:hover {
+  background: lightgrey;
+}
+
+div#resultModalBody {
+  overflow: auto;
+  max-height: calc(100vh - 190px);
+}
+
+.info-img {
+  display: block;
+  max-width: 100%;
 }

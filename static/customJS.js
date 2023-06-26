@@ -21,7 +21,8 @@ const getItemHTML = ({ id, min, max, label, step, value }) => `
       <div class="form-group mb-4" id="container${id}">
         <label for="${id}"
           >${label}<span class="text-muted">(min: ${min}, max: ${max})</span>
-          <span data-toggle="tooltip" title="Remove this factor" data-placement="bottom" class="remove-feature" onclick="removeFeature(${id})">⛔️</span>
+          <span data-toggle="tooltip" title="Remove this factor" data-placement="top" class="remove-feature" onclick="removeFeature(${id})">⛔️</span>
+          <span class="info-feature" onclick="showInfo(${id})">?</span>
         </label>
         <div class="row">
           <div class="col-9 d-flex">
@@ -46,10 +47,13 @@ const getItemHTML = ({ id, min, max, label, step, value }) => `
               required
               id="${id}_current"
               class="form-control factors-input factors-input-box"
-              oninput="validity.valid||handleRangeInput(this, ${id});" />
+              onchange="handleRangeInput(this, ${id});" />
           </div>
         </div>
       </div>`;
+
+const getResultModalBody = ({ info, img }) => `<p>${info}</p>
+<img src="${img}" class="info-img"/>`;
 
 const showSWSError = ({ message }) => {
   const errorMsgEl = document.querySelector(
@@ -99,6 +103,7 @@ const addNewFactor = (event) => {
     const summaryULContainer = document.getElementById("listOfRisks");
     $(summaryHTMLToBeInserted).insertBefore(summaryULContainer);
     updateCountOnFactorsChange();
+    $('[data-toggle="tooltip"]').tooltip({ container: "body" });
   }
 };
 
@@ -189,7 +194,7 @@ $("#pdpForm").bind("submit", async function (e) {
     console.log(result, "PENDING PASS SCENARIO HANDLING");
     var dd = parseInt(result.confidenceScore);
     var PP = result.userStatus;
-    document.getElementById("resultProgressbar").style = `--value: ${dd}`;
+    document.getElementById("resultProgressBar").style = `--value: ${dd}`;
     document.getElementById("resultText").innerText = PP;
     $("#resultModal").modal();
   } catch (error) {
@@ -230,7 +235,21 @@ const handleRangeInput = (event, { id }) => {
     window.event.cancelBubble = true;
   }
 
-  // const { min, max } = config[id];
+  const { min, max } = config[id];
+
+  if (Number(event.value) > Number(max)) {
+    alert("Input out of range");
+    setTimeout(() => {
+      event.value = max;
+    }, 10);
+  }
+
+  if (Number(event.value) < Number(min)) {
+    alert("Input out of range");
+    setTimeout(() => {
+      event.value = min;
+    }, 10);
+  }
 
   const rangeSliderEl = document.getElementById(id);
   rangeSliderEl.value = event.value;
@@ -239,12 +258,14 @@ const handleRangeInput = (event, { id }) => {
   summaryULContainer.innerText = event.value;
 };
 
-$("form").keypress(function (e) {
+const stopOnEnter = (e) => {
   //Enter key
-  if (e.which == 13) {
+  if (e && (e.which == 13 || e.keyCode == 13)) {
     return false;
   }
-});
+};
+
+$("#pdpForm").keypress(stopOnEnter);
 
 const removeFeature = (element) => {
   /* eslint-disable no-debugger, no-console */
@@ -256,4 +277,29 @@ const removeFeature = (element) => {
   itemToRemove.remove();
   summaryItemToRemove.remove();
   updateCountOnFactorsChange();
+};
+
+const showInfo = (element) => {
+  const clickedItem = element.id;
+
+  const headerEl = document.getElementById("resultModalLabel");
+  headerEl.innerText = factorConfig[clickedItem].label;
+
+  const bodyEl = document.getElementById("resultModalBody");
+  bodyEl.innerHTML = getResultModalBody({ ...factorConfig[clickedItem] });
+
+  $("#resultModal").modal();
+};
+
+const showDataModal = (element) => {
+  const infoToShow = element.dataset["info"];
+  const headerToShow = element.innerText;
+
+  const headerEl = document.getElementById("resultModalLabel");
+  headerEl.innerHTML = headerToShow;
+
+  const bodyEl = document.getElementById("resultModalBody");
+  bodyEl.innerHTML = infoToShow;
+
+  $("#resultModal").modal();
 };
