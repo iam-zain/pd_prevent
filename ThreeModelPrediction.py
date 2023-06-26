@@ -268,6 +268,6 @@ if high_cat_sum == low_cat_sum:
     sum_difference = (high_cat_sum)/3 * 100
 else: 
     sum_difference = (high_cat_sum - low_cat_sum)/3 * 100
-round_differ = "{:.2f}".format(sum_difference)
+round_differ = "{:.0f}".format(sum_difference)
 
 print( most_frequent + "#" + (round_differ))
