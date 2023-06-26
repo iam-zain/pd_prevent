@@ -11,7 +11,7 @@
   --percentage: var(--value);
   --primary: #369;
   --secondary: #adf;
-  --size: 300px;
+  --size: 160px;
   animation: progress 2s 0.5s forwards;
   width: var(--size);
   aspect-ratio: 1;

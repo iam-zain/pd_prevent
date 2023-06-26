@@ -4,6 +4,15 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
   $(".selectpicker").selectpicker("mobile");
 }
 
+const getRiskCategoryMessage = (riskCategory) => {
+  const riskCategoryHTMLMessages = {
+    PROFILE_1: `Risk profile: <b>High risk</b>`,
+    PROFILE_2: "Low",
+  };
+
+  return riskCategoryHTMLMessages[riskCategory];
+};
+
 const getSummaryItemHTML = ({ description, label, value, id }) => `
               <li id="summary${id}" class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
@@ -52,8 +61,31 @@ const getItemHTML = ({ id, min, max, label, step, value }) => `
         </div>
       </div>`;
 
-const getResultModalBody = ({ info, img }) => `<p>${info}</p>
+const getInfoModalBody = ({ info, img }) => `<p>${info}</p>
 <img src="${img}" class="info-img"/>`;
+
+const getResultModalBody = ({ riskCategory, confidenceScore }) => `
+      <div class="my-3 row align-items-center">
+        <div class="col-9 result-text-display">
+          <div id="resultText">${getRiskCategoryMessage(riskCategory)}</div>
+          <p>Confidence Score: ${confidenceScore}%</p>
+        </div>
+        <div class="col-3">
+          <div id="resultProgressBar" role="progressbar" style="--value: ${confidenceScore}"></div>
+        </div>
+      </div>
+      <p class="my-1 mt-5">
+        The <b>confidence score</b> represents the level of certainty in the risk
+        category prediction. Higher scores indicate a higher level of confidence in
+        the prediction
+      </p>
+      <p class="text-muted my-1">
+        Disclaimer: This risk category prediction is based on your input parameters
+        and is a result of an academic research project. It should not be considered a
+        substitute for professional medical advice. Please consult with a healthcare
+        professional for personalized medical guidance.
+      </p>
+`;
 
 const showSWSError = ({ message }) => {
   const errorMsgEl = document.querySelector(
@@ -191,11 +223,15 @@ $("#pdpForm").bind("submit", async function (e) {
       body: formData,
     });
     const result = await response.json();
-    console.log(result, "PENDING PASS SCENARIO HANDLING");
-    var dd = parseInt(result.confidenceScore);
-    var PP = result.userStatus;
-    document.getElementById("resultProgressBar").style = `--value: ${dd}`;
-    document.getElementById("resultText").innerText = PP;
+
+    var confidenceScore = parseInt(result.confidenceScore);
+    var riskCategory = result.userStatus;
+    document.getElementById("resultModalLabel").innerText =
+      "Prediction results";
+
+    const bodyEl = document.getElementById("resultModalBody");
+    bodyEl.innerHTML = getResultModalBody({ confidenceScore, riskCategory });
+
     $("#resultModal").modal();
   } catch (error) {
     resetSubmitButton();
@@ -286,7 +322,7 @@ const showInfo = (element) => {
   headerEl.innerText = factorConfig[clickedItem].label;
 
   const bodyEl = document.getElementById("resultModalBody");
-  bodyEl.innerHTML = getResultModalBody({ ...factorConfig[clickedItem] });
+  bodyEl.innerHTML = getInfoModalBody({ ...factorConfig[clickedItem] });
 
   $("#resultModal").modal();
 };
