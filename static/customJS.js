@@ -6,8 +6,8 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 
 const getRiskCategoryMessage = (riskCategory) => {
   const riskCategoryHTMLMessages = {
-    PROFILE_1: `Risk profile: <b>High risk</b>`,
-    PROFILE_2: "Low",
+    PROFILE_1: `Risk profile: <b><span style="color: red;">High risk</span></b>`,
+    PROFILE_2: `Risk profile: <b><span style="color: green;">Low risk</span></b>`,
   };
 
   return riskCategoryHTMLMessages[riskCategory];

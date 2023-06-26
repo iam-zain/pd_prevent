@@ -37,22 +37,21 @@ def submit():
     command = f'python ThreeModelPrediction.py {age} {len(feature_scores)} {input_str}'
     output = subprocess.getoutput(command)
     out_split = output.split("#")
-    return out_split
-    # userInfo = out_split[0]
+    userInfo = out_split[0]
     
-    # if "Patient" in userInfo:
-    #     userStatus = "Patient"
-    # elif "Healthy" in userInfo:
-    #     userStatus = "Healthy"
-    # else:
-    #     userStatus = "Unknown"
+    if "Patient" in userInfo:
+        userStatus = "PROFILE_1"
+    elif "Healthy" in userInfo:
+        userStatus = "PROFILE_2"
+    else:
+        userStatus = "Unknown"
 
-    # confidenceScore = int(out_split[1])
+    confidenceScore = int(out_split[1])
     
-    # data = {
-    #      'userStatus':str(userStatus), 'confidenceScore': confidenceScore
-    # }
-    # return data
+    data = {
+         'userStatus':str(userStatus), 'confidenceScore': confidenceScore
+    }
+    return data
     
 
 if __name__ == '__main__':
