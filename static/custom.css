@@ -72,3 +72,7 @@ div#resultModalBody {
   display: block;
   max-width: 100%;
 }
+
+.result-text-display {
+  font-size: 2em;
+}
