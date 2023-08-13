@@ -155,12 +155,15 @@ $(document).ready(function () {
 
   $('[data-toggle="tooltip"]').tooltip({ container: "body" });
 
-  window.CSS.registerProperty({
-    name: "--percentage",
-    syntax: "<number>",
-    inherits: true,
-    initialValue: 0,
-  });
+
+  if(window.CSS && window.CSS.registerProperty ) {
+    window.CSS.registerProperty({
+      name: "--percentage",
+      syntax: "<number>",
+      inherits: true,
+      initialValue: 0,
+    });
+  }
 
   const wrapperElement = new DocumentFragment();
 
