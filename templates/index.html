@@ -24,6 +24,24 @@
     <link rel="stylesheet" href="./static/loader.css" />
     <link rel="stylesheet" href="./static/custom.css" />
     <link rel="stylesheet" href="./static/progressbar.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Set the background color to blue for the top 25% of the screen */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 25%;
+        background-color: #87ceeb;
+        z-index: -1;
+      }
+    </style>
   </head>
   <body>
     <!-- Loading -->
@@ -140,7 +158,7 @@
       <div class="py-5 text-center">
         <img
           class="d-block mx-auto mb-4"
-          src="https://cdn-icons-png.flaticon.com/512/4901/4901662.png"
+          src="static/gif_forHomePage.gif"
           alt=""
           width="72"
           height="72"
