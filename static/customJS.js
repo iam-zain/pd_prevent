@@ -182,10 +182,10 @@ var validateAndGetFormData = () => {
   );
 
   if (!genderEl || !genderEl.value) {
-    throw new Error("Pls input gender");
+    throw new Error("Please input gender");
   }
   if (!ageEl || !ageEl.value) {
-    throw new Error("Pls input age");
+    throw new Error("Please input age");
   }
 
   if (factorsInputArr.length < 5) {

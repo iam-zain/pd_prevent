@@ -7,7 +7,7 @@ window.factorConfig = {
     label: "Score of Anxiety",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   Apathy: {
     type: "range",
@@ -16,7 +16,7 @@ window.factorConfig = {
     label: "Score of Apathy",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   Benton: {
     type: "range",
@@ -25,7 +25,7 @@ window.factorConfig = {
     label: "Score of Benton",
     min: 0,
     max: 20,
-    value: 15,
+    value: 18,
     step: 0.1,
   },
   Clock: {
@@ -35,7 +35,7 @@ window.factorConfig = {
     label: "Score of Clock",
     min: 0,
     max: 10,
-    value: 8,
+    value: 9,
   },
   Cognition: {
     type: "range",
@@ -64,7 +64,7 @@ window.factorConfig = {
     label: "Score of Constipate",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   Depress: {
     type: "range",
@@ -73,7 +73,7 @@ window.factorConfig = {
     label: "Score of Depress",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   DopaDefic: {
     type: "range",
@@ -82,7 +82,7 @@ window.factorConfig = {
     label: "Score of DopaDefic",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   Education: {
     type: "range",
@@ -100,7 +100,7 @@ window.factorConfig = {
     label: "Score of Epworth",
     min: 0,
     max: 24,
-    value: 5,
+    value: 0,
   },
   Fatigue: {
     type: "range",
@@ -109,7 +109,7 @@ window.factorConfig = {
     label: "Score of Fatigue",
     min: 0,
     max: 4,
-    value: 2,
+    value: 0,
   },
   Geriatric_Depression: {
     type: "range",
@@ -147,7 +147,7 @@ window.factorConfig = {
     label: "Score of Hopkins",
     min: 20,
     max: 64,
-    value: 55,
+    value: 60,
   },
   Hopkins_Recog: {
     type: "range",
@@ -156,7 +156,7 @@ window.factorConfig = {
     label: "Score of Hopkins_Recog",
     min: 20,
     max: 61,
-    value: 55,
+    value: 60,
   },
   Impulsive_CompulsiveBehavior: {
     type: "range",
@@ -184,7 +184,7 @@ window.factorConfig = {
     label: "Score of LetterNumber",
     min: 4,
     max: 19,
-    value: 10,
+    value: 18,
   },
   Lexical_Fluency: {
     type: "range",
@@ -193,7 +193,7 @@ window.factorConfig = {
     label: "Score of Lexical_Fluency",
     min: 10,
     max: 110,
-    value: 60,
+    value: 90,
   },
   LightHead: {
     type: "range",
@@ -211,7 +211,7 @@ window.factorConfig = {
     label: "Score of Modif_Boston",
     min: 8,
     max: 60,
-    value: 50,
+    value: 55,
   },
   Montreal_Cognitive: {
     type: "range",
@@ -229,7 +229,7 @@ window.factorConfig = {
     label: "Score of Pain",
     min: 0,
     max: 4,
-    value: 1,
+    value: 0,
   },
   REM_AwakeDream: {
     type: "range",
@@ -275,7 +275,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Cardio",
     min: 0,
     max: 6,
-    value: 1,
+    value: 0,
   },
   SCOPA_Eye: {
     type: "range",
@@ -284,7 +284,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Eye",
     min: 0,
     max: 3,
-    value: 1,
+    value: 0,
   },
   SCOPA_Gastro: {
     type: "range",
@@ -293,7 +293,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Gastro",
     min: 0,
     max: 9,
-    value: 1,
+    value: 0,
   },
   SCOPA_Sex: {
     type: "range",
@@ -302,7 +302,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Sex",
     min: 0,
     max: 6,
-    value: 1,
+    value: 0,
   },
   SCOPA_Thermo: {
     type: "range",
@@ -311,7 +311,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Thermo",
     min: 0,
     max: 6,
-    value: 1,
+    value: 0,
   },
   SCOPA_Urine: {
     type: "range",
@@ -320,7 +320,7 @@ window.factorConfig = {
     label: "Score of SCOPA_Urine",
     min: 0,
     max: 17,
-    value: 1,
+    value: 0,
   },
   Semantic: {
     type: "range",
@@ -329,7 +329,7 @@ window.factorConfig = {
     label: "Score of Semantic",
     min: 25,
     max: 81,
-    value: 70,
+    value: 77,
   },
   SleepDay: {
     type: "range",
@@ -356,7 +356,7 @@ window.factorConfig = {
     label: "Score of STAIA",
     min: 20,
     max: 80,
-    value: 30,
+    value: 20,
   },
   STAIS: {
     type: "range",
@@ -365,7 +365,7 @@ window.factorConfig = {
     label: "Score of STAIS",
     min: 20,
     max: 80,
-    value: 30,
+    value: 20,
   },
   Symbol_Digit: {
     type: "range",
@@ -374,7 +374,7 @@ window.factorConfig = {
     label: "Score of Symbol_Digit",
     min: 20,
     max: 80,
-    value: 60,
+    value: 70,
   },
   Trail_Making_A: {
     type: "range",
@@ -383,7 +383,7 @@ window.factorConfig = {
     label: "Score of Trail_Making_A",
     min: 1,
     max: 150,
-    value: 30,
+    value: 20,
   },
   Trail_Making_B: {
     type: "range",
@@ -392,7 +392,7 @@ window.factorConfig = {
     label: "Score of Trail_Making_B",
     min: 1,
     max: 294,
-    value: 70,
+    value: 60,
   },
   UPSIT: {
     type: "range",
@@ -401,7 +401,7 @@ window.factorConfig = {
     label: "Score of UPSIT",
     min: 0,
     max: 40,
-    value: 36,
+    value: 39,
   },
   Urine: {
     type: "range",
