@@ -155,8 +155,7 @@ $(document).ready(function () {
 
   $('[data-toggle="tooltip"]').tooltip({ container: "body" });
 
-
-  if(window.CSS && window.CSS.registerProperty ) {
+  if (window.CSS && window.CSS.registerProperty) {
     window.CSS.registerProperty({
       name: "--percentage",
       syntax: "<number>",
@@ -189,8 +188,8 @@ var validateAndGetFormData = () => {
     throw new Error("Pls input age");
   }
 
-  if (factorsInputArr.length < 3) {
-    throw new Error("Pls select at least 3 factors to continue");
+  if (factorsInputArr.length < 5) {
+    throw new Error("Please select at least 5 features to continue");
   }
 
   // Gender=Male&Age=22&num_features=3&Feature1=Anxiety&Score_Feature1=3
