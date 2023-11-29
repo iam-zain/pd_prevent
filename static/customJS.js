@@ -191,10 +191,11 @@ var validateAndGetFormData = () => {
   if (factorsInputArr.length < 5) {
     throw new Error("Please select at least 5 features to continue");
   }
+  var genderValue = genderEl.value.toLowerCase() === "male" ? 0 : 1;
 
   // Gender=Male&Age=22&num_features=3&Feature1=Anxiety&Score_Feature1=3
   var formData = new FormData();
-  formData.append("Gender", genderEl.value);
+  formData.append("Gender", genderValue);
   formData.append("Age", ageEl.value);
   formData.append("num_features", factorsInputArr.length);
 

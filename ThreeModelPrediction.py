@@ -7,8 +7,9 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from scipy.stats import pearsonr
-from keras.layers import Input, Dense
+from keras.optimizers import Adam, Nadam
 from keras.models import load_model, Model
+from keras.layers import Input, Dense, Dropout
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import pairwise_distances
 from tensorflow.keras.models import Sequential
@@ -18,32 +19,34 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-df = pd.read_csv('Feats45_unCategAge_APPRDX.csv')
+df = pd.read_csv('Feats45_unCategAge_APPRDX_Gender.csv')
 df1 = df.drop(['PATNO','APPRDX'], axis = 1)
 df2 = pd.read_csv('NonMotor_Empty.csv')
 df3 = df2.drop('Patient_ID', axis = 1)
 new_age = int(sys.argv[1])
+new_gender = int(sys.argv[2])
 df3.at[0, 'Age'] = new_age
+df3.at[0, 'Gender'] = new_gender
 col_age = df3.pop('Age')
 df3.insert(0, "Age", col_age)
 dframe1 = pd.read_csv('Feats45_unCategSparse_APPRDX.csv')
-dframe = dframe1.drop(['PATNO','APPRDX','Age'], axis = 1)
+dframe = dframe1.drop(['PATNO','APPRDX','Age', 'Gender'], axis = 1)
 dframe = dframe.add(1)
 tests_scores = []
-num_columns = int(sys.argv[2])
+num_columns = int(sys.argv[3])
 def update_values(df3, dframe):
     # Input from the user for number of columns
-    num_columns = int(sys.argv[2])
-    if num_columns < 3 or num_columns > 45:
-        print("Invalid input, please enter a number from 3 to 45")
+    num_columns = int(sys.argv[3])
+    if num_columns < 5 or num_columns > 45:
+        print("Invalid input, please enter a number from 5 to 45")
         sys.exit()
 
     columns = []
     values = []
 
     for i in range(num_columns):
-        column = sys.argv[i*2 + 3]
-        value = float(sys.argv[i*2 + 4])
+        column = sys.argv[i*2 + 4]
+        value = float(sys.argv[i*2 + 5])
         columns.append(column)
         values.append(value)
         tests_scores.append([column, value])
@@ -58,49 +61,67 @@ def update_values(df3, dframe):
 df3, dframe = update_values(df3, dframe)
 col_age = df3.pop('Age')
 df3.insert(0, "Age", col_age)
+col_gender = df3.pop('Gender')
+df3.insert(1, "Gender", col_gender)
 df4 = df3
 df3 = df3.dropna(axis = 1)
 dframe = dframe.dropna()
 col_age = dframe1.pop('Age')
+col_gender = dframe1.pop('Gender')
 dframe.insert(0, "Age", col_age)
+dframe.insert(1, "Gender", col_gender)
 col_Apprdx = dframe1.pop('APPRDX')
 dframe.insert(0, 'APPRDX', col_Apprdx)
 dframes = dframe.drop(['APPRDX'], axis = 1)
 dframe.loc[:, "APPRDX"] = dframe["APPRDX"].apply(lambda x: x - 1)
-X = dframe.iloc[:, 1:].values
-y = dframe.iloc[:, 0].values
+count_0 = dframe['APPRDX'].value_counts()[0]
+count_1 = dframe['APPRDX'].value_counts()[1]
+min_count = min(count_0, count_1)
+subset_dframe = dframe.groupby('APPRDX').apply(lambda x: x.sample(min_count)).reset_index(drop=True)
+X = subset_dframe.iloc[:, 1:].values
+y = subset_dframe.iloc[:, 0].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 1)
 np.random.seed(1)
 tf.random.set_seed(1)
 model_ann = load_model('model_ann.h5')
 new_input_layer = Input(shape=dframes.shape[1:])
-new_hidden_layer1 = Dense(units=12, activation='relu',kernel_regularizer=tf.keras.regularizers.l1(0.01))(new_input_layer)
+new_hidden_layer1 = Dense(units=12, activation='relu', kernel_regularizer=tf.keras.regularizers.l1_l2(l1=0.057, l2=0.0001))(new_input_layer)
+new_hidden_layer1_dropout = Dropout(0.0)(new_hidden_layer1)
 pretrained_hidden_layer2_weights = model_ann.layers[1].get_weights()
 pretrained_output_layer_weights = model_ann.layers[2].get_weights()
-new_hidden_layer2 = Dense(units=pretrained_hidden_layer2_weights[0].shape[1], activation='relu', weights=pretrained_hidden_layer2_weights)(new_hidden_layer1)
+new_hidden_layer2 = Dense(units=pretrained_hidden_layer2_weights[0].shape[1], activation='relu', weights=pretrained_hidden_layer2_weights)(new_hidden_layer1_dropout)
 new_output_layer = Dense(units=pretrained_output_layer_weights[0].shape[1], activation='sigmoid', weights=pretrained_output_layer_weights)(new_hidden_layer2)
 new_model = Model(inputs=new_input_layer, outputs=new_output_layer)
-new_model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-
-for layer in new_model.layers[2:]:
+optimizer = Nadam(learning_rate=0.001)
+new_model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
+for layer in new_model.layers[3:]:
     layer.trainable = False
+results_list = []
+for _ in range(5):
+    new_model.fit(X_train, y_train, batch_size=10, epochs=50, shuffle=True, verbose=0)
+    y_pred = new_model.predict(X_test, verbose = 0)
+    y_pred = (y_pred > 0.5)
+    cm = confusion_matrix(y_test, y_pred)
+    acc_score = accuracy_score(y_test, y_pred)
+    prediction = new_model.predict(df3, verbose=0)
     
-new_model.fit(X_train, y_train, batch_size = 32, epochs = 20, verbose = 0)
-# Predict the outcome of the df3 data frame
-prediction = new_model.predict(df3, verbose = 0)
-if prediction[0][0] > 0.5:
-    predicted_class = "Healthy"
-    scaled_prediction = prediction[0][0]
-else:
-    scaled_prediction = 1 - (prediction[0][0] - 0) * (1 - 0.5) / (0.5 - 0)
-    predicted_class = "Patient"
-    scaled_prediction = scaled_prediction
+    if prediction[0][0] > 0.5:
+        predicted_class = "Healthy"
+        scaled_prediction = prediction[0][0]
+    else:
+        scaled_prediction = 1 - (prediction[0][0] - 0) * (1 - 0.5) / (0.5 - 0)
+        predicted_class = "Patient"
+        scaled_prediction = scaled_prediction
 
-result_df_NeuNet = pd.DataFrame({'Category': [predicted_class],
-                           'Percentage': [scaled_prediction]})
+    results_list.append({'Category': predicted_class, 'Percentage': scaled_prediction, 'Accuracy': acc_score})
+result_df_NeuNet = pd.DataFrame(results_list)
+final_output = result_df_NeuNet['Category'].value_counts().idxmax()
+mean_scaled_prediction = result_df_NeuNet[result_df_NeuNet['Category'] == final_output]['Percentage'].mean()
+final_result_df_NeuNet = pd.DataFrame({'Category': [final_output],
+                                       'Percentage': [mean_scaled_prediction]})
 #print(result_df_NeuNet)
 
-
+# 2nd Model
 df4.insert (0, 'Patient_ID', df2['Patient_ID'])
 merged_df = pd.concat ([df1, df4], axis = 0)
 merged_df.reset_index(inplace = True)
@@ -193,10 +214,6 @@ else:
     percentage = patient_pct
 
 result_df_RecSys = pd.DataFrame({'Category': [category], 'Percentage': [percentage]})
-#print(result_df_RecSys)
-
-#print("The user might fall under category of", most_occur_value)
-#print(total_counts)
 
 most_occurring = similar_users['Patient_Type'].value_counts().index[0]
 select_simil_user = similar_users.loc[similar_users['Patient_Type'] == most_occurring]
@@ -213,7 +230,6 @@ fill_values = {col: val for col, val in zip(colY.columns, weighted_avg_cols)}
 colY = colY.fillna(fill_values)
 col_Age = df4.pop('Age')
 colY.insert(0, 'Age', col_Age)
-#print("Predicted scores for the other features", colY)
 
 
 # 3rd Model
@@ -255,7 +271,7 @@ else:
 result_df_IndiMod = pd.DataFrame({"Category": [category], "Percentage": [percentage]})
 #print(result_df_IndiMod)
 
-pred_all = pd.concat([result_df_IndiMod, result_df_RecSys, result_df_NeuNet])
+pred_all = pd.concat([result_df_IndiMod, result_df_RecSys, final_result_df_NeuNet])
 #print(pred_all)
 
 most_frequent = pred_all['Category'].mode()[0]
