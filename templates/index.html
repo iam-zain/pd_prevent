@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="./static/loader.css" />
     <link rel="stylesheet" href="./static/custom.css" />
     <link rel="stylesheet" href="./static/progressbar.css" />
+    <link rel="stylesheet" href="./static/selectStyles.css" />
   </head>
   <body>
     <!-- Loading -->
@@ -227,15 +228,22 @@
                 <span class="text-muted">(minimum 5 required)</span>
               </div>
               <div class="col-6 mb-3 mb-sm-5 selectpicker-wrp">
-                <select
-                  id="swsFactors"
-                  class="selectpicker"
-                  data-live-search="true"
-                  data-show-subtext="true"
-                  data-width="100%"
-                  title="Select a test or symptom"
-                  data-style="btn-selectpicker-swsFactors"
-                ></select>
+                <div class="select-box selectpicker">
+                  <div class="selected-item" title="Select a test or symptom">
+                    <span class="selected-item-label">
+                      Select a test or symptom
+                    </span>
+                    <span class="caret"></span>
+                  </div>
+                  <div class="select-items hidden" id="selectOptionsContainer">
+                    <!-- Options are dynamically inserted on document.ready-->
+                  </div>
+                  <input
+                    type="text"
+                    class="select-search hidden"
+                    placeholder="Search..."
+                  />
+                </div>
                 <label
                   class="text-danger small font-weight-bold error-helper"
                   for="swsFactors"
@@ -260,6 +268,14 @@
               id="submitFormCTA"
             >
               Calculate my risk profile
+            </button>
+
+            <button
+              class="btn btn-lg btn-block"
+              id="resetButton"
+              onclick="resetForm"
+            >
+              Reset
             </button>
           </form>
         </div>
@@ -329,8 +345,6 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
 
     <script src="./static/customJS.js"></script>
   </body>

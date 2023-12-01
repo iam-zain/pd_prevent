@@ -1,9 +1,5 @@
 const config = window.factorConfig;
 
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
-  $(".selectpicker").selectpicker("mobile");
-}
-
 const getRiskCategoryMessage = (riskCategory) => {
   const riskCategoryHTMLMessages = {
     PROFILE_1: `Risk profile: <b><span style="color: red;">High risk</span></b>`,
@@ -62,7 +58,7 @@ const getItemHTML = ({ id, min, max, label, step, value }) => `
       </div>`;
 
 const getInfoModalBody = ({ info, img }) => `<p>${info}</p>
-<img src="${img}" class="info-img"/>`;
+      <img src="${img}" class="info-img"/>`;
 
 const getResultModalBody = ({ riskCategory, confidenceScore }) => `
       <div class="my-3 row align-items-center">
@@ -100,9 +96,9 @@ const removeSWSError = () => {
 };
 
 const addNewFactor = (event) => {
-  var selectedItemValue = $(".selectpicker").val();
+  var selectedItemValue = $(".selected-item")[0].innerText;
   console.log(selectedItemValue);
-  if (!selectedItemValue) {
+  if (!selectedItemValue || selectedItemValue === "Select a test or symptom ") {
     showSWSError({ message: "Please select a value from the dropdown" });
   } else {
     removeSWSError();
@@ -167,12 +163,76 @@ $(document).ready(function () {
   const wrapperElement = new DocumentFragment();
 
   for (item of Object.values(config)) {
-    const optionElement = document.createElement("option");
+    const optionElement = document.createElement("div");
+    optionElement.classList.add("select-item");
     optionElement.innerText = item.label;
     wrapperElement.append(optionElement);
   }
-  $("#swsFactors").append(wrapperElement);
+  $("#selectOptionsContainer").append(wrapperElement);
+  registerSelectListeners();
+  registerResetListener();
 });
+
+const registerResetListener = () => {
+  document.getElementById("resetButton").addEventListener("click", resetForm);
+};
+const resetSelectedOption = () => {};
+
+const registerSelectListeners = () => {
+  document
+    .querySelector(".selected-item")
+    .addEventListener("click", function () {
+      this.nextElementSibling.classList.toggle("hidden");
+      this.nextElementSibling.nextElementSibling.classList.toggle("hidden");
+    });
+
+  document.querySelectorAll(".select-item").forEach((item) => {
+    item.addEventListener("click", function () {
+      let selectedItem = this.parentNode.previousElementSibling;
+      selectedItem.textContent = this.textContent;
+      this.parentNode.classList.add("hidden");
+      this.parentNode.nextElementSibling.classList.add("hidden");
+    });
+  });
+
+  document
+    .querySelector(".select-search")
+    .addEventListener("keyup", function () {
+      let filter = this.value.toUpperCase();
+      let items = this.previousElementSibling.children;
+      for (let i = 0; i < items.length; i++) {
+        let txtValue = items[i].textContent || items[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          items[i].style.display = "";
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+    });
+
+  document.addEventListener("click", function (event) {
+    var selectBox = document.querySelector(".select-box");
+    if (!selectBox.contains(event.target)) {
+      var selectItems = document.querySelector(".select-items");
+      var selectSearch = document.querySelector(".select-search");
+      selectItems.classList.add("hidden");
+      selectSearch.classList.add("hidden");
+    }
+  });
+};
+
+const resetForm = (event) => {
+  event.preventDefault();
+  document.getElementById("pdpForm").reset();
+  clickAllRemoveFeature();
+};
+
+const clickAllRemoveFeature = () => {
+  var elements = document.querySelectorAll(".remove-feature");
+  elements.forEach(function (element) {
+    element.click();
+  });
+};
 
 var validateAndGetFormData = () => {
   var genderEl = document.querySelector('[name="gender"]:checked');
@@ -207,7 +267,7 @@ var validateAndGetFormData = () => {
   return formData;
 };
 
-var showLoadingOnSubmitCTA = (element, onClick) => {
+const showLoadingOnSubmitCTA = () => {
   const loaderModal = document.getElementById("fullPageLoader");
   const submitFormCTAEl = document.getElementById("submitFormCTA");
   loaderModal.classList.add("d-flex");
@@ -233,7 +293,10 @@ $("#pdpForm").bind("submit", async function (e) {
       "Prediction results";
 
     const bodyEl = document.getElementById("resultModalBody");
-    bodyEl.innerHTML = getResultModalBody({ confidenceScore, riskCategory });
+    bodyEl.innerHTML = getResultModalBody({
+      confidenceScore,
+      riskCategory,
+    });
 
     $("#resultModal").modal();
   } catch (error) {
@@ -316,6 +379,7 @@ const removeFeature = (element) => {
   itemToRemove.remove();
   summaryItemToRemove.remove();
   updateCountOnFactorsChange();
+  $(".tooltip").hide();
 };
 
 const showInfo = (element) => {
