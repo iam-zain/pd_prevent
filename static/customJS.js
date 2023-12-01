@@ -225,6 +225,8 @@ const resetForm = (event) => {
   event.preventDefault();
   document.getElementById("pdpForm").reset();
   clickAllRemoveFeature();
+  removeSWSError();
+  $(".selected-item")[0].innerText = "Select a test or symptom ";
 };
 
 const clickAllRemoveFeature = () => {
