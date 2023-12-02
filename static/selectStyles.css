@@ -19,6 +19,10 @@
 }
 
 .select-items {
+  padding: 4px 12px;
+}
+
+.select-items {
   left: 0;
   right: 0;
   top: calc(100% + 12px);
@@ -32,6 +36,10 @@
 
 .select-search {
   width: 100%;
+  outline: none;
+  margin-top: 8px;
+  border-radius: 4px;
+  padding: 4px 12px;
   box-sizing: border-box;
   border: 1px solid #ccc;
 }
