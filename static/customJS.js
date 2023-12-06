@@ -169,11 +169,14 @@ $(document).ready(function () {
     wrapperElement.append(optionElement);
   }
   $("#selectOptionsContainer").append(wrapperElement);
-  registerSelectListeners();
-  registerResetListener();
+  setTimeout(() => {
+    registerSelectListeners();
+    registerResetFormListener();
+    setContainerHeightObserver();
+  }, 10);
 });
 
-const registerResetListener = () => {
+const registerResetFormListener = () => {
   document.getElementById("resetButton").addEventListener("click", resetForm);
 };
 const resetSelectedOption = () => {};
@@ -407,4 +410,21 @@ const showDataModal = (element) => {
   bodyEl.innerHTML = infoToShow;
 
   $("#resultModal").modal();
+};
+
+const setContainerHeightObserver = () => {
+  window.addEventListener("resize", setMaxHeight);
+
+  function setMaxHeight() {
+    var viewportHeight = window.innerHeight;
+    var selectedItemsRect = document
+      .querySelector(".selected-item")
+      .getBoundingClientRect();
+    var maxHeight = Math.ceil(viewportHeight - selectedItemsRect.bottom - 60);
+    document.getElementById("selectOptionsContainer").style.maxHeight =
+      maxHeight + "px";
+  }
+
+  // Call the function initially
+  setMaxHeight();
 };
